@@ -36,6 +36,11 @@ const resetPassword = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const getYouTubeLiveVideo = catchAsync(async (req,res) => {
+  const videoData = await authService.getYouTubeVideo()
+  res.status(httpStatus.OK).send(videoData)
+})
+
 module.exports = {
   register,
   login,
@@ -43,4 +48,5 @@ module.exports = {
   refreshTokens,
   forgotPassword,
   resetPassword,
+  getYouTubeLiveVideo
 };

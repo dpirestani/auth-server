@@ -18,6 +18,23 @@ components:
         email: fake@example.com
         name: fake name
         role: user
+        
+    Interpreter:
+      type: object
+      properties:
+        id:
+          type: string
+        knownLanguages:
+          type: array
+        preferredLanguage:
+          type: string
+        userId:
+          type: string
+      example:
+        id: 5ebac534954b54139806c112
+        knownLanguages: ["Hindi","English","German"]
+        preferredLanguage: "English"
+        userId: "6000342dwee3434348df"
 
     Token:
       type: object

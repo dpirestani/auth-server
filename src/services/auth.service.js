@@ -32,6 +32,16 @@ const logout = async (refreshToken) => {
   await refreshTokenDoc.remove();
 };
 
+
+const getYouTubeVideo = async () => {
+  return {
+    status: true,
+    message: 'Video Foudn successfully',
+    data: {url: 'https://youtu.be/8MmX4pluKr4?list=RD8MmX4pluKr4'}
+  }
+};
+
+
 /**
  * Refresh auth tokens
  * @param {string} refreshToken
@@ -76,4 +86,5 @@ module.exports = {
   logout,
   refreshAuth,
   resetPassword,
+  getYouTubeVideo
 };

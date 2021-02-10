@@ -4,6 +4,8 @@ const userService = require('./user.service');
 const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
+const getVideoId = require('get-video-id');
+
 
 /**
  * Login with username and password
@@ -34,10 +36,13 @@ const logout = async (refreshToken) => {
 
 
 const getYouTubeVideo = async () => {
+  const url = 'https://youtu.be/8MmX4pluKr4?list=RD8MmX4pluKr4'
+  const { id } = getVideoId(url);
+
   return {
     status: true,
     message: 'Video Foudn successfully',
-    data: {url: 'https://youtu.be/8MmX4pluKr4?list=RD8MmX4pluKr4'}
+    data: {url,id }
   }
 };
 

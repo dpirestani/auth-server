@@ -8,6 +8,12 @@ const register = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send({ user, tokens });
 });
 
+
+const uploadS3 = catchAsync(async (req,res) => {
+  const upload = userService.uploadToS3(req.body);
+
+});
+
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
   const user = await authService.loginUserWithEmailAndPassword(email, password);
@@ -48,5 +54,6 @@ module.exports = {
   refreshTokens,
   forgotPassword,
   resetPassword,
-  getYouTubeLiveVideo
+  getYouTubeLiveVideo,
+  uploadS3
 };

@@ -1,6 +1,13 @@
 const httpStatus = require('http-status');
+const multer = require('multer');
+const AWS = require('aws-sdk');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
+
+const  AWS_ACCESS_KEY = 'AKIAJKQ7WO2DVT4CIWLQ';
+const AWS_SECRET_KEY = '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'; const AWS_REGION = 'arn:aws:s3:::terpbucket'; const AWS_BUCKET_NAME = 'terpbucket';
+
+const s3 = new AWS.S3({ accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY });
 
 /**
  * Create a user
@@ -80,6 +87,48 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+const uploadToS3 = async (files) => {
+  const storage = multer.memoryStorage();
+  const upload = multer({ storage });
+
+  return new Promise((resolve, reject) => {
+    upload.any()(request, response, async (err) => {
+      if (err) {
+        return reject(err);
+      }
+      const fileArr = request.files;
+      const uploadResult = await uploadFileToS3(fileArr[0]);
+      if (uploadResult) {
+        return resolve({ success: true, message: FILE_UPLOAD_SUCCESS, data: { url: uploadResult.Location } });
+      } else {
+        return reject({ success: false, message: FILE_UPLOAD_FAIL, data: { url: '' } });
+      }
+    });
+  });
+};
+
+const s3 = new AWS.S3({ accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY });
+
+const uploadFileToS3 = async (file, options = {}) => {
+  const buffer = file.buffer;
+  const fileName = file.originalName ? `${file.originalName}_${String(Date.now())}` : String(Date.now());
+  return new Promise((resolve, reject) => {
+    return s3.upload({
+      Bucket: AWS_BUCKET_NAME,
+      ACL: 'public-read',
+      Key: fileName,
+      Body: buffer,
+    }, (err, result) => {
+      if (err) {
+        reject(err);
+      }
+      else {
+        resolve(result);
+      }
+    });
+  });
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -87,4 +136,5 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  uploadToS3
 };

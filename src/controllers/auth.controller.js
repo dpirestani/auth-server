@@ -11,6 +11,7 @@ const register = catchAsync(async (req, res) => {
 
 const uploadS3 = catchAsync(async (req,res) => {
   const upload = userService.uploadToS3(req.body);
+  res.send({upload})
 
 });
 

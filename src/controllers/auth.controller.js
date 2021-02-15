@@ -48,7 +48,7 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 const getYouTubeLiveVideo = catchAsync(async (req, res) => {
-  const videoData = await authService.getYouTubeVideo()
+  const videoData = await authService.getYouTubeVideo(req.body)
   res.status(httpStatus.OK).send(videoData)
 })
 

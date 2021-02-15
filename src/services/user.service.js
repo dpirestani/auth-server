@@ -3,9 +3,12 @@ const multer = require('multer');
 const AWS = require('aws-sdk');
 const { User } = require('../models');
 const ApiError = require('../utils/ApiError');
+const config = require('./../config/config')
 
-const  AWS_ACCESS_KEY = 'AKIAJKQ7WO2DVT4CIWLQ';
-const AWS_SECRET_KEY = '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'; const AWS_REGION = 'arn:aws:s3:::terpbucket'; const AWS_BUCKET_NAME = 'terpbucket';
+const  AWS_ACCESS_KEY = config.aws.awsAccessKey;
+const AWS_SECRET_KEY = config.aws.awsSecretKey; 
+const AWS_REGION = config.aws.awsregion; 
+const AWS_BUCKET_NAME = config.aws.awsBucketName;
 
 const s3 = new AWS.S3({ accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY });
 

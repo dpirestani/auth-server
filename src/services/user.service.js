@@ -90,7 +90,7 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
-const uploadToS3 = async (files) => {
+const uploadToS3 = async (request) => {
   const storage = multer.memoryStorage();
   const upload = multer({ storage });
 

@@ -9,11 +9,15 @@ const register = catchAsync(async (req, res) => {
 });
 
 
-const uploadS3 = catchAsync(async (req,res) => {
-  const upload = userService.uploadToS3(req.body);
-  res.send({upload})
+const uploadS3 = catchAsync(async (req, res) => {
+  const upload = await userService.uploadToS3(req.body);
+  res.send({ upload })
 
 });
+
+const runProcess = catchAsync(async (req, res) => {
+  const data = await authService.runProcess()
+})
 
 const login = catchAsync(async (req, res) => {
   const { email, password } = req.body;
@@ -43,7 +47,7 @@ const resetPassword = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
-const getYouTubeLiveVideo = catchAsync(async (req,res) => {
+const getYouTubeLiveVideo = catchAsync(async (req, res) => {
   const videoData = await authService.getYouTubeVideo()
   res.status(httpStatus.OK).send(videoData)
 })
@@ -56,5 +60,7 @@ module.exports = {
   forgotPassword,
   resetPassword,
   getYouTubeLiveVideo,
-  uploadS3
+  uploadS3,
+  runProcess
+
 };

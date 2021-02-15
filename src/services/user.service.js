@@ -107,7 +107,6 @@ const uploadToS3 = async (files) => {
   });
 };
 
-const s3 = new AWS.S3({ accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY });
 
 const uploadFileToS3 = async (file, options = {}) => {
   const buffer = file.buffer;

@@ -5,6 +5,9 @@ const Token = require('../models/token.model');
 const ApiError = require('../utils/ApiError');
 const { tokenTypes } = require('../config/tokens');
 const getVideoId = require('get-video-id');
+const sys = require('sys')
+const exec = require('child_process').exec;
+
 
 
 /**
@@ -20,6 +23,18 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   }
   return user;
 };
+
+const runProcess = async () => {
+  let child;
+  // executes `pwd`
+  child = exec("src\\additional\\startStream.sh", function (error, stdout, stderr) {
+    console.log('stdout: ' + stdout);
+    console.log('stderr: ' + stderr);
+    if (error !== null) {
+      console.log('exec error: ' + error);
+    }
+  });
+}
 
 /**
  * Logout
@@ -42,7 +57,7 @@ const getYouTubeVideo = async () => {
   return {
     status: true,
     message: 'Video Foudn successfully',
-    data: {url,id }
+    data: { url, id }
   }
 };
 
@@ -91,5 +106,6 @@ module.exports = {
   logout,
   refreshAuth,
   resetPassword,
-  getYouTubeVideo
+  getYouTubeVideo,
+  runProcess
 };

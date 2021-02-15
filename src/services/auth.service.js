@@ -50,7 +50,14 @@ const logout = async (refreshToken) => {
 };
 
 
-const getYouTubeVideo = async () => {
+const getYouTubeVideo = async (data) => {
+  if(!data.meetingId) {
+    return {
+      status: false,
+      message: 'Video not found/created',
+      data: { }
+    }
+  }
   const url = 'https://youtu.be/8MmX4pluKr4?list=RD8MmX4pluKr4'
   const { id } = getVideoId(url);
 

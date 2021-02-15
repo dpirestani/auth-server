@@ -10,7 +10,7 @@ const AWS_SECRET_KEY = config.aws.awsSecretKey;
 const AWS_REGION = config.aws.awsregion; 
 const AWS_BUCKET_NAME = config.aws.awsBucketName;
 
-const s3 = new AWS.S3({ accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY });
+const s3 = new AWS.S3({ accessKeyId: AWS_ACCESS_KEY, secretAccessKey: AWS_SECRET_KEY,region: AWS_REGION});
 
 /**
  * Create a user

@@ -93,7 +93,8 @@ const deleteUserById = async (userId) => {
 const uploadToS3 = async (request,response) => {
   const storage = multer.memoryStorage();
   const upload = multer({ storage });
-
+  const FILE_UPLOAD_SUCCESS = 'File uploaded';
+  const FILE_UPLOAD_FAIL= 'Failed to upload your file'
   return new Promise((resolve, reject) => {
     upload.any()(request, response, async (err) => {
       if (err) {

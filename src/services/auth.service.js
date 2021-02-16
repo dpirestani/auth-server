@@ -35,20 +35,23 @@ const runProcess = async (meetingId) => {
   fs.writeFile('/home/ubuntu/auth-server/src/additional/bbb-streaming', yaml.safeDump(doc), (err) => {
       if (err) {
           console.log("error in writting file",err);
+          return err;
       }
+
+      compose.upAll({ cwd: '/home/ubuntu/auth-server/src/additional/bbb-streaming', log: true })
+      .then(
+        () => {
+          console.log('done');
+          return true;
+        },
+        err => {
+          console.log('something went wrong:', err.message)
+          return false;
+        }
+      );
   });
 
-  compose.upAll({ cwd: '/home/ubuntu/auth-server/src/additional/bbb-streaming', log: true })
-    .then(
-      () => {
-        console.log('done');
-        return true;
-      },
-      err => {
-        console.log('something went wrong:', err.message)
-        return false;
-      }
-    );
+
 
   //let child;
   // executes `pwd`

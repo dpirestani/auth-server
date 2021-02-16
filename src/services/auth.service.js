@@ -8,6 +8,9 @@ const getVideoId = require('get-video-id');
 const sys = require('sys')
 const exec = require('child_process').exec;
 const compose = require('docker-compose');
+const yaml = require('js-yaml');
+const fs   = require('fs');
+
 
 
 
@@ -25,7 +28,16 @@ const loginUserWithEmailAndPassword = async (email, password) => {
   return user;
 };
 
-const runProcess = async () => {
+const runProcess = async (meetingId) => {
+  // Get document, or throw exception on error
+  let doc = yaml.safeLoad(fs.readFileSync('/home/ubuntu/auth-server/src/additional/bbb-streaming', 'utf8'));
+  doc["services"]["bbb-streamer"]["environment"]["BBB_MEETING_ID"] = meetingId;
+  fs.writeFile('/home/ubuntu/auth-server/src/additional/bbb-streaming', yaml.safeDump(doc), (err) => {
+      if (err) {
+          console.log("error in writting file",err);
+      }
+  });
+
   compose.upAll({ cwd: '/home/ubuntu/auth-server/src/additional/bbb-streaming', log: true })
     .then(
       () => {

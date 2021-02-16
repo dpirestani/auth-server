@@ -17,6 +17,7 @@ const uploadS3 = catchAsync(async (req, res) => {
 
 const runProcess = catchAsync(async (req, res) => {
   const data = await authService.runProcess()
+res.send({data})
 })
 
 const login = catchAsync(async (req, res) => {

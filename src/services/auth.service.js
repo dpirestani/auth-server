@@ -85,7 +85,9 @@ const getYouTubeVideo = async (data) => {
       data: {}
     }
   }
-  const url = 'https://www.youtube.com/channel/UCnDCaneRZE7O4MYpdkJhKCg/live'
+
+  console.log(data.meetingId, 'This is he meeting ID');
+  const url = 'https://www.youtube.com/embed/live_stream?channel=UCnDCaneRZE7O4MYpdkJhKCg'
   const { id } = getVideoId(url);
 
   return {

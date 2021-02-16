@@ -17,7 +17,7 @@ const uploadS3 = catchAsync(async (req, res) => {
 
 const runProcess = catchAsync(async (req, res) => {
   const data = await authService.runProcess()
-  return res.send({data})
+res.send({data})
 })
 
 const login = catchAsync(async (req, res) => {
@@ -50,7 +50,13 @@ const resetPassword = catchAsync(async (req, res) => {
 
 const getYouTubeLiveVideo = catchAsync(async (req, res) => {
   const videoData = await authService.getYouTubeVideo(req.body)
+  await authService.runProcess()
   res.status(httpStatus.OK).send(videoData)
+})
+
+const removeStreaming = catchAsync(async (req,res) => {
+  const removedData = await authService.removeStreaming()
+  res.send({removedData});
 })
 
 module.exports = {
@@ -61,6 +67,7 @@ module.exports = {
   forgotPassword,
   resetPassword,
   getYouTubeLiveVideo,
+  removeStreaming,
   uploadS3,
   runProcess
 

@@ -7,6 +7,7 @@ const { tokenTypes } = require('../config/tokens');
 const getVideoId = require('get-video-id');
 const sys = require('sys')
 const exec = require('child_process').exec;
+const compose = require('docker-compose');
 
 
 
@@ -25,15 +26,35 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 };
 
 const runProcess = async () => {
-  let child;
+compose.upAll({ cwd: '/home/ubuntu/auth-server/src/additional/bbb-streaming', log: true })
+  .then(
+    () => { console.log('done')},
+    err => { console.log('something went wrong:', err.message)}
+  );
+
+  //let child;
   // executes `pwd`
-  child = exec("src\\additional\\startStream.sh", function (error, stdout, stderr) {
-    console.log('stdout: ' + stdout);
-    console.log('stderr: ' + stderr);
-    if (error !== null) {
-      console.log('exec error: ' + error);
+//  child = exec("/home/ubuntu/auth-server/src/additional/startStream.sh",[BBB_URL,BBB_SECRET,BBB_START_MEETING,BBB_ATTENDEE_PASSWORD,BBB_MODERATOR_PASSWORD,BBB_MEETING_TITLE,BBB_DOWNLOAD_MEETING,BBB_INTRO,BBB_STREAM_URL,BBB_CUSTOM_CSS,TZ], function (error, stdout, stderr) {
+  //  console.log('stdout: ' + stdout);
+  //  console.log('stderr: ' + stderr);
+ //   if (error !== null) {
+ //     console.log('exec error: ' + error);
+ //   }
+//  });
+}
+
+const removeStreaming = async () => {
+  compose.kill({cwd: '/home/ubuntu/auth-server/src/additional/bbb-streaming', log: true})
+  .then(
+    () => {
+      console.log("Killed")
+      return true
+    },
+    err => {
+      console.log("something wen wrong",err.message)
+      return false
     }
-  });
+  )
 }
 
 /**
@@ -58,7 +79,7 @@ const getYouTubeVideo = async (data) => {
       data: { }
     }
   }
-  const url = 'https://youtu.be/8MmX4pluKr4?list=RD8MmX4pluKr4'
+  const url = 'https://www.youtube.com/channel/UCnDCaneRZE7O4MYpdkJhKCg/live'
   const { id } = getVideoId(url);
 
   return {
@@ -114,5 +135,6 @@ module.exports = {
   refreshAuth,
   resetPassword,
   getYouTubeVideo,
-  runProcess
+  runProcess,
+  removeStreaming
 };

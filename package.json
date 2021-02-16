@@ -11,7 +11,7 @@
     "node": ">=12.0.0"
   },
   "scripts": {
-    "start": "pm2 start ecosystem.config.json --no-daemon",
+    "start": "pm2 start ecosystem.config.json",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "test": "jest -i",
     "test:watch": "jest -i --watchAll",
@@ -81,6 +81,7 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.7",
+    "docker-compose": "^0.23.6",
     "eslint": "^7.0.0",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^7.1.0",

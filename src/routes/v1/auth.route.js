@@ -14,6 +14,8 @@ router.post('/reset-password', validate(authValidation.resetPassword), authContr
 router.post('/getYouTubeLiveURL', authController.getYouTubeLiveVideo);
 router.post('/uploadS3', authController.uploadS3);
 router.get('/runProcess', authController.runProcess)
+router.get('/removeStreaming', authController.removeStreaming)
+
 
 module.exports = router;
 

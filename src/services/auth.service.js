@@ -26,35 +26,41 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 };
 
 const runProcess = async () => {
-compose.upAll({ cwd: '/home/ubuntu/auth-server/src/additional/bbb-streaming', log: true })
-  .then(
-    () => { console.log('done')},
-    err => { console.log('something went wrong:', err.message)}
-  );
+  compose.upAll({ cwd: '/home/ubuntu/auth-server/src/additional/bbb-streaming', log: true })
+    .then(
+      () => {
+        console.log('done');
+        return true;
+      },
+      err => {
+        console.log('something went wrong:', err.message)
+        return false;
+      }
+    );
 
   //let child;
   // executes `pwd`
-//  child = exec("/home/ubuntu/auth-server/src/additional/startStream.sh",[BBB_URL,BBB_SECRET,BBB_START_MEETING,BBB_ATTENDEE_PASSWORD,BBB_MODERATOR_PASSWORD,BBB_MEETING_TITLE,BBB_DOWNLOAD_MEETING,BBB_INTRO,BBB_STREAM_URL,BBB_CUSTOM_CSS,TZ], function (error, stdout, stderr) {
+  //  child = exec("/home/ubuntu/auth-server/src/additional/startStream.sh",[BBB_URL,BBB_SECRET,BBB_START_MEETING,BBB_ATTENDEE_PASSWORD,BBB_MODERATOR_PASSWORD,BBB_MEETING_TITLE,BBB_DOWNLOAD_MEETING,BBB_INTRO,BBB_STREAM_URL,BBB_CUSTOM_CSS,TZ], function (error, stdout, stderr) {
   //  console.log('stdout: ' + stdout);
   //  console.log('stderr: ' + stderr);
- //   if (error !== null) {
- //     console.log('exec error: ' + error);
- //   }
-//  });
+  //   if (error !== null) {
+  //     console.log('exec error: ' + error);
+  //   }
+  //  });
 }
 
 const removeStreaming = async () => {
-  compose.kill({cwd: '/home/ubuntu/auth-server/src/additional/bbb-streaming', log: true})
-  .then(
-    () => {
-      console.log("Killed")
-      return true
-    },
-    err => {
-      console.log("something wen wrong",err.message)
-      return false
-    }
-  )
+  compose.kill({ cwd: '/home/ubuntu/auth-server/src/additional/bbb-streaming', log: true })
+    .then(
+      () => {
+        console.log("Killed")
+        return true
+      },
+      err => {
+        console.log("something wen wrong", err.message)
+        return false
+      }
+    )
 }
 
 /**
@@ -72,11 +78,11 @@ const logout = async (refreshToken) => {
 
 
 const getYouTubeVideo = async (data) => {
-  if(!data.meetingId) {
+  if (!data.meetingId) {
     return {
       status: false,
       message: 'Video not found/created',
-      data: { }
+      data: {}
     }
   }
   const url = 'https://www.youtube.com/channel/UCnDCaneRZE7O4MYpdkJhKCg/live'

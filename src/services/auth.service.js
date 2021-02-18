@@ -31,7 +31,7 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 const runProcess = async (meetingId) => {
   // Get document, or throw exception on error
   let doc = yaml.safeLoad(fs.readFileSync('/home/ubuntu/auth-server/src/additional/bbb-streaming', 'utf8'));
-  doc["services"]["bbb-streamer"]["environment"]["BBB_MEETING_ID"] = meetingId;
+  doc["services"]["bbb-streamer"]["environment"]["BBB_MEETING_ID"] = meetingId || '2hwpu5zmzkg0bze8alu07hqgwtb6urnifwiuarki';
   fs.writeFile('/home/ubuntu/auth-server/src/additional/bbb-streaming', yaml.safeDump(doc), (err) => {
       if (err) {
           console.log("error in writting file",err);

@@ -9,6 +9,7 @@ const sys = require('sys')
 const exec = require('child_process').exec;
 const compose = require('docker-compose');
 const yaml = require('js-yaml');
+const jsonConvert = require('json2yaml')
 const fs   = require('fs');
 
 
@@ -30,9 +31,11 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 
 const runProcess = async (meetingId) => {
   // Get document, or throw exception on error
-  let doc = yaml.safeLoad(fs.readFileSync('/home/ubuntu/auth-server/src/additional/bbb-streaming', 'utf8'));
-  doc["services"]["bbb-streamer"]["environment"]["BBB_MEETING_ID"] = meetingId;
-  fs.writeFile('/home/ubuntu/auth-server/src/additional/bbb-streaming', yaml.safeDump(doc), (err) => {
+  let doc = yaml.safeLoad(fs.readFileSync('/home/ubuntu/auth-server/src/additional/bbb-streaming/docker-compose.yml', 'utf8'));
+		
+  doc["services"]["bbb-streamer"]["environment"][2] =`BBB_MEETING_ID=${meetingId}`;
+	console.log(doc)
+  fs.writeFile('/home/ubuntu/auth-server/src/additional/bbb-streaming/docker-compose.yml', yaml.safeDump(doc), (err) => {
       if (err) {
           console.log("error in writting file",err);
           return err;

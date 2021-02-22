@@ -2,6 +2,7 @@ const express = require('express');
 const validate = require('../../middlewares/validate');
 const authValidation = require('../../validations/auth.validation');
 const authController = require('../../controllers/auth.controller');
+const userController = require('../../controllers/user.controller');
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.post('/getYouTubeLiveURL', authController.getYouTubeLiveVideo);
 router.post('/uploadS3', authController.uploadS3);
 router.get('/runProcess', authController.runProcess)
 router.post('/removeStreaming', authController.removeStreaming)
+router.post('/sendEmail',userController.sendEmail);
 
 
 module.exports = router;

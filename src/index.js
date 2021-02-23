@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const app = require('./app');
+const socket = require("socket.io");
 
 
 //const https = require('https');
@@ -7,49 +8,6 @@ const http = require('http');
 const config = require('./config/config');
 const logger = require('./config/logger');
 const fs = require('fs');
-
-
-const speech = require('@google-cloud/speech');
-   const encoding = 'LINEAR16';
-   const sampleRateHertz = 16000;
-   const languageCode = 'en-US';
-
-  const config = {
-    encoding: encoding,
-    sampleRateHertz: sampleRateHertz,
-    languageCode: languageCode,
-  };
-
-  const request = {
-    config,
-    interimResults: false, //Get interim results from stream
-  };
-
-
-  const client = new speech.SpeechClient();
-  const recognizeStream = client
-  .streamingRecognize(request)
-  .on('error', console.error)
-  .on('data', data =>
-    console.log(
-      data.results[0] && data.results[0].alternatives[0]
-        ? `Transcription: ${data.results[0].alternatives[0].transcript}\n`
-        : '\n\nReached transcription time limit, press Ctrl+C\n'
-    )
-  );
-  const recorder = require('node-record-lpcm16');
-  recorder
-  .record({
-    sampleRateHertz: sampleRateHertz,
-    threshold: 0,
-    // Other options, see https://www.npmjs.com/package/node-record-lpcm16#options
-    verbose: false,
-    recordProgram: 'rec', // Try also "arecord" or "sox"
-    silence: '10.0',
-  })
-  .stream()
-  .on('error', console.error)
-  .pipe(recognizeStream);
 
 
 let server;
@@ -73,7 +31,7 @@ io.on('connection', function(socket) {
   socket.on('clientEvent', function(data) {
     console.log(data);
     const transcribeData = 'data';
-    socket.emit('transcribeData', {desc: transcribeData})
+    socket.broadcast('transcribeData', {desc: transcribeData})
  });
 
   socket.on('disconnect', function () {

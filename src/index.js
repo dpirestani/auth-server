@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const app = require('./app');
-const socket = require("socket.io");
+const socketServer = require("socket.io");
 
 
 //const https = require('https');
@@ -8,9 +8,11 @@ const http = require('http');
 const config = require('./config/config');
 const logger = require('./config/logger');
 const fs = require('fs');
+const socket =  require('socket.io')
 
 
 let server;
+let io;
 
 
 mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
@@ -20,24 +22,28 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
     .listen(config.port, () => {
         console.log('server running at ' + config.port)
     })
+
+    io =socketServer(server);
+
+    io.on('connection', function(socket) {
+      console.log('A socket got connected');
+    
+      //Send a message after a timeout of 4seconds
+      socket.on('clientEvent', function(data) {
+        console.log(data);
+        const transcribeData = 'data';
+        socket.broadcast('transcribeData', {desc: transcribeData})
+     });
+    
+      socket.on('disconnect', function () {
+         console.log('A socket disconnected');
+      });
+    });
 });
 
-let io = require('socket.io')(server);
 
-io.on('connection', function(socket) {
-  console.log('A socket got connected');
 
-  //Send a message after a timeout of 4seconds
-  socket.on('clientEvent', function(data) {
-    console.log(data);
-    const transcribeData = 'data';
-    socket.broadcast('transcribeData', {desc: transcribeData})
- });
 
-  socket.on('disconnect', function () {
-     console.log('A socket disconnected');
-  });
-});
 
 const exitHandler = () => {
   if (server) {

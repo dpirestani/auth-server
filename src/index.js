@@ -28,12 +28,12 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
     io.on('connection', function(socket) {
       console.log('A socket got connected');
     
-      //Send a message after a timeout of 4seconds
-      socket.on('clientEvent', function(data) {
-        console.log(data);
-        const transcribeData = 'data';
-        socket.broadcast('transcribeData', {desc: transcribeData})
-     });
+        //Send a message after a timeout of 4seconds
+        socket.on('clientEvent', function(data) {
+          console.log(data);
+          const transcribeData = 'data';
+          socket.broadcast('transcribeData', {desc: data})
+      });
     
       socket.on('disconnect', function () {
          console.log('A socket disconnected');

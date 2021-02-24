@@ -31,8 +31,10 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
         //Send a message after a timeout of 4seconds
         socket.on('clientEvent', function(data) {
           console.log(data);
-          const transcribeData = 'data';
-          socket.broadcast('transcribeData', {desc: data})
+
+		//console.log("I ma seeing socket", socket)
+          //const transcribeData = 'data';
+          io.sockets.emit('data',JSON.stringify(data))
       });
     
       socket.on('disconnect', function () {

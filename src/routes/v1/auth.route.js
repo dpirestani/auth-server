@@ -17,6 +17,7 @@ router.post('/uploadS3', authController.uploadS3);
 router.get('/runProcess', authController.runProcess)
 router.post('/removeStreaming', authController.removeStreaming)
 router.post('/sendEmail',userController.sendEmail);
+router.get('/video',authController.getVideoStreamFromGuest);
 
 
 module.exports = router;

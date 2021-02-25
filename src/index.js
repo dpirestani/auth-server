@@ -27,16 +27,15 @@ mongoose.connect(config.mongoose.url, config.mongoose.options).then(() => {
 
     io.on('connection', function(socket) {
       console.log('A socket got connected');
-    
         //Send a message after a timeout of 4seconds
         socket.on('clientEvent', function(data) {
           console.log(data);
-
-		//console.log("I ma seeing socket", socket)
-          //const transcribeData = 'data';
           io.sockets.emit('data',JSON.stringify(data))
       });
-    
+      socket.on('askVideo', function(data) {
+        console.log(data);
+        io.sockets.emit('playVideo',JSON.stringify(data))
+      });
       socket.on('disconnect', function () {
          console.log('A socket disconnected');
       });

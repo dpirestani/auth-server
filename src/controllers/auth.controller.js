@@ -54,6 +54,10 @@ const getYouTubeLiveVideo = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).send(videoData)
 })
 
+const getVideoStreamFromGuest = catchAsync(async (req,res) => {
+  const videoFrames = await authService.getVideoStreamFromGuest(req,res)
+})
+
 const removeStreaming = catchAsync(async (req,res) => {
   const removedData = await authService.removeStreaming()
   res.send({removedData});
@@ -69,6 +73,7 @@ module.exports = {
   getYouTubeLiveVideo,
   removeStreaming,
   uploadS3,
-  runProcess
+  runProcess,
+  getVideoStreamFromGuest
 
 };

@@ -32,13 +32,22 @@ const loginUserWithEmailAndPassword = async (email, password) => {
 
 const getVideoStreamFromGuest = async (req,res) => {
   const range = req.headers.range;
+  const fileType = req.headers.fileType;
   if (!range) {
     return res.status(400).send("Requires Range header");
   }
 
+  if(!fileType) {
+    return res.status(400).send("Requires fileType header");
+  }
   // get video stats (about 61MB)
-  const videoPath = "/home/ubuntu/download.mp4";
-  const videoSize = fs.statSync("/home/ubuntu/download.mp4").size;
+  let videoPath = "/home/ubuntu/download.mp4";
+  let videoSize = fs.statSync("/home/ubuntu/download.mp4").size;
+
+  if(fileType === 'audio') {
+   videoPath = "/home/ubuntu/download.mp3";
+   videoSize = fs.statSync("/home/ubuntu/download.mp3").size;
+  }
 
   // Parse Range
   // Example: "bytes=32324-"
@@ -55,14 +64,20 @@ const getVideoStreamFromGuest = async (req,res) => {
     "Content-Type": "video/mp4",
   };
 
+  if(fileType === 'audio') {
+    headers["Content-Type"]= 'audio/mpeg'
+  }
+
+
+
   // HTTP Status 206 for Partial Content
   res.writeHead(206, headers);
 
   // create video read stream for this particular chunk
-  const videoStream = fs.createReadStream(videoPath, { start, end });
+  const strem = fs.createReadStream(videoPath, { start, end });
 
   // Stream the video chunk to the client
-  return videoStream.pipe(res);
+  return strem.pipe(res);
 }
 
 const runProcess = async (meetingId) => {
